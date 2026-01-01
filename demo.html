@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PFOS - Personal & Family Operating System (Demo)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            background: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .dashboard-header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .filters-bar {
+            background: white;
+            padding: 16px 30px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        .filter-group select {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .export-buttons button {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .export-buttons button:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .summary-card.blue { border-left: 5px solid #3498db; }
+        .summary-card.orange { border-left: 5px solid #f39c12; }
+        .summary-card.red { border-left: 5px solid #e74c3c; }
+        .summary-card.green { border-left: 5px solid #2ecc71; }
+
+        .card-icon {
+            font-size: 48px;
+        }
+
+        .card-content h3 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .card-content p {
+            margin: 4px 0 0 0;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .dashboard-section {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: #667eea;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+            border-left: 4px solid transparent;
+        }
+
+        .card:hover {
+            background: #e9ecef;
+            border-left-color: #667eea;
+            transform: translateX(4px);
+        }
+
+        .card.expiry-critical {
+            border-left-color: #e74c3c;
+            background: #fee;
+        }
+
+        .card.expiry-warning {
+            border-left-color: #f39c12;
+            background: #fff8e1;
+        }
+
+        .card-main h3 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .card-main p {
+            margin: 0;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .priority-badge.high {
+            background: #fee;
+            color: #e74c3c;
+        }
+
+        .priority-badge.medium {
+            background: #fff8e1;
+            color: #f39c12;
+        }
+
+        .btn-action {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #764ba2;
+            transform: scale(1.05);
+        }
+
+        .expense-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: #2ecc71;
+            margin: 8px 0;
+        }
+
+        .expense-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .category-tag {
+            background: #e3f2fd;
+            color: #3498db;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .date {
+            font-size: 12px;
+            color: #95a5a6;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            .summary-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Personal & Family Operating System</h1>
+            <div class="header-actions">
+                <button class="btn-primary" onclick="alert('Scan Document feature coming soon!')">
+                    📄 Scan Document
+                </button>
+                <button class="btn-secondary" onclick="alert('Customize Dashboard feature coming soon!')">
+                    ⚙️ Customize Dashboard
+                </button>
+            </div>
+        </div>
+
+        <div class="filters-bar">
+            <div class="filter-group">
+                <label>Date Range:</label>
+                <select>
+                    <option>Today</option>
+                    <option selected>This Week</option>
+                    <option>This Month</option>
+                    <option>This Year</option>
+                    <option>Custom Range</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Category:</label>
+                <select>
+                    <option selected>All</option>
+                    <option>Documents</option>
+                    <option>Finance</option>
+                    <option>Tasks</option>
+                    <option>Vault</option>
+                </select>
+            </div>
+
+            <div class="export-buttons">
+                <button onclick="alert('Exporting to PDF...')">📊 Export PDF</button>
+                <button onclick="alert('Exporting to Excel...')">📈 Export Excel</button>
+                <button onclick="alert('Exporting to CSV...')">📋 Export CSV</button>
+            </div>
+        </div>
+
+        <div class="summary-cards">
+            <div class="summary-card blue">
+                <div class="card-icon">💰</div>
+                <div class="card-content">
+                    <h3>$12,450</h3>
+                    <p>Total Expenses</p>
+                </div>
+            </div>
+
+            <div class="summary-card orange">
+                <div class="card-icon">✓</div>
+                <div class="card-content">
+                    <h3>8</h3>
+                    <p>Pending Tasks</p>
+                </div>
+            </div>
+
+            <div class="summary-card red">
+                <div class="card-icon">⚠️</div>
+                <div class="card-content">
+                    <h3>3</h3>
+                    <p>Expiring Soon</p>
+                </div>
+            </div>
+
+            <div class="summary-card green">
+                <div class="card-icon">🔒</div>
+                <div class="card-content">
+                    <h3>24</h3>
+                    <p>Vault Items</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>📅 Upcoming Expiries</h2>
+                    <button class="btn-link">View All</button>
+                </div>
+                <div class="card-list">
+                    <div class="card expiry-critical">
+                        <div class="card-main">
+                            <h3>Passport</h3>
+                            <span class="badge">30 days left</span>
+                        </div>
+                        <button class="btn-action">Renew</button>
+                    </div>
+                    <div class="card expiry-warning">
+                        <div class="card-main">
+                            <h3>Driver License</h3>
+                            <span class="badge">15 days left</span>
+                        </div>
+                        <button class="btn-action">Renew</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-main">
+                            <h3>Insurance Policy</h3>
+                            <span class="badge">45 days left</span>
+                        </div>
+                        <button class="btn-action">Renew</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>✓ Pending Tasks</h2>
+                    <button class="btn-link">View All</button>
+                </div>
+                <div class="card-list">
+                    <div class="card">
+                        <div class="card-main">
+                            <h3>Renew passport</h3>
+                            <p>Due: 2024-12-15</p>
+                            <span class="priority-badge high">high</span>
+                        </div>
+                        <button class="btn-action">Complete</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-main">
+                            <h3>Doctor appointment</h3>
+                            <p>Due: 2024-11-25</p>
+                            <span class="priority-badge medium">medium</span>
+                        </div>
+                        <button class="btn-action">Complete</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-main">
+                            <h3>Pay utility bills</h3>
+                            <p>Due: 2024-11-20</p>
+                            <span class="priority-badge high">high</span>
+                        </div>
+                        <button class="btn-action">Complete</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h2>💳 Recent Expenses</h2>
+                    <button class="btn-link">View All</button>
+                </div>
+                <div class="card-list">
+                    <div class="card">
+                        <div class="card-main">
+                            <h3>Groceries</h3>
+                            <p class="expense-amount">500 SCU</p>
+                            <div class="expense-meta">
+                                <span class="category-tag">Food</span>
+                                <span class="date">2024-11-15</span>
+                            </div>
+                        </div>
+                        <button class="btn-action">Details</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-main">
+                            <h3>Electricity bill</h3>
+                            <p class="expense-amount">200 USD</p>
+                            <div class="expense-meta">
+                                <span class="category-tag">Utilities</span>
+                                <span class="date">2024-11-10</span>
+                            </div>
+                        </div>
+                        <button class="btn-action">Details</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-main">
+                            <h3>Medical expenses</h3>
+                            <p class="expense-amount">1500 PKR</p>
+                            <div class="expense-meta">
+                                <span class="category-tag">Health</span>
+                                <span class="date">2024-11-08</span>
+                            </div>
+                        </div>
+                        <button class="btn-action">Details</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
