@@ -206,5 +206,9 @@ MIT License - Use freely for personal or commercial projects.
 - **Family-first**: Not just personal productivity—**family resilience**
 
 ---
+📧 Contact
+Author: khrehankashmiri
+GitHub: @khrehankashmiri
+Issues: GitHub Issues
 
 **Built with ❤️ for real-world utility**
