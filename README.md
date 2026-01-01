@@ -148,8 +148,8 @@ Users can customize their dashboard by:
 | Tier | Features | Price |
 |------|----------|-------|
 | **Free** | Single user, local-only, 5 custom units, basic rules | $0 |
-| **Family** | Family sharing (5 users), cloud backup, 20 custom units, expiry alerts | $3/month |
-| **Pro** | Unlimited rules, audit logs, export to Excel/PDF, queue API integrations | $6/month |
+| **Family** | Family sharing (5 users), cloud backup, 20 custom units, expiry alerts | $0/month |
+| **Pro** | Unlimited rules, audit logs, export to Excel/PDF, queue API integrations | $0/month |
 
 ## 🛠️ Technology Stack
 
